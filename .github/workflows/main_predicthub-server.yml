@@ -18,11 +18,13 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: List repository contents
+        run: ls -al
+
       - name: Navigate to the server directory
         run: |
           if [ -d "./server" ]; then
-            echo "Server directory exists, navigating..."
-            cd ./server
+            echo "Server directory exists, proceeding..."
           else
             echo "Error: ./server directory does not exist!"
             exit 1
@@ -66,15 +68,15 @@ jobs:
           name: python-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip
+        run: unzip release.zip -d extracted
 
       - name: List extracted files
-        run: ls -al
+        run: ls -al extracted
 
       - name: Verify server directory
         run: |
-          if [ -d "./server" ]; then
-            echo "Server directory exists."
+          if [ -d "./extracted/server" ]; then
+            echo "Server directory exists after extraction."
           else
             echo "Error: ./server directory does not exist after extraction!"
             exit 1
@@ -96,7 +98,7 @@ jobs:
 
       - name: Run the application
         run: |
-          cd ./server
+          cd ./extracted/server
           source venv/bin/activate
           python app.py
         env:
