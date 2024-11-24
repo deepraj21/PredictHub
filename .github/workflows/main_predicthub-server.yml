@@ -47,48 +47,25 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
-
+      id-token: write #This is required for requesting the JWT
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: python-app
-
       - name: Unzip artifact for deployment
-        run: unzip release.zip -d extracted
-
-      - name: List extracted files
-        run: ls -al extracted
-
-      - name: Verify server directory
-        run: |
-          if [ -d "./extracted/server" ]; then
-            echo "Server directory exists after extraction."
-          else
-            echo "Error: ./server directory does not exist after extraction!"
-            exit 1
-          fi
-
-      - name: Set up Python version
-        uses: actions/setup-python@v5
+        run: unzip release.zip
+      
+      - name: Login to Azure
+        uses: azure/login@v2
         with:
-          python-version: '3.11'
-
-      - name: Install dependencies in deployment environment
-        run: |
-          cd ./extracted/server
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-
-      - name: Run the application
-        run: |
-          cd ./extracted/server
-          source venv/bin/activate
-          gunicorn --bind 0.0.0.0:5000 app:app
-        env:
-          MONGO_URI: mongodb+srv://krishnakanta2008:krishna2008@cluster0.7rimb.mongodb.net
-          CLOUDINARY_CLOUD_NAME: dtnesry4e
-          CLOUDINARY_API_KEY: 764463645645659
-          CLOUDINARY_API_SECRET: jFZvSGPrmYKdKV87Lff_H8YP4FE
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_612D660D30B8429D99E4C54056F959B4 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8C23D2F22AF34B43B4CEC52F5C46648A }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3A9873989F434B7FA2BD4B6697E8E0F0 }}
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v3
+        id: deploy-to-webapp
+        with:
+          app-name: 'predicthub-server'
+          slot-name: 'Production'
+          
