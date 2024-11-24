@@ -21,7 +21,7 @@ jobs:
       - name: List repository contents
         run: ls -al
 
-      - name: Navigate to the server directory
+      - name: Verify server directory exists
         run: |
           if [ -d "./server" ]; then
             echo "Server directory exists, proceeding..."
@@ -43,8 +43,7 @@ jobs:
 
       - name: Zip artifact for deployment
         run: |
-          cd ./server
-          zip -r ../release.zip ./*
+          zip -r release.zip ./server
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
