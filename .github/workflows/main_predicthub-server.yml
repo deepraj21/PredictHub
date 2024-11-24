@@ -30,17 +30,6 @@ jobs:
             exit 1
           fi
 
-      - name: Create and start virtual environment
-        run: |
-          cd ./server
-          python -m venv venv
-          source venv/bin/activate
-
-      - name: Install dependencies
-        run: |
-          cd ./server
-          pip install -r requirements.txt
-
       - name: Zip artifact for deployment
         run: |
           zip -r release.zip ./server
@@ -81,19 +70,17 @@ jobs:
             exit 1
           fi
 
-      - name: Login to Azure
-        uses: azure/login@v2
+      - name: Set up Python version
+        uses: actions/setup-python@v5
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_612D660D30B8429D99E4C54056F959B4 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8C23D2F22AF34B43B4CEC52F5C46648A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3A9873989F434B7FA2BD4B6697E8E0F0 }}
+          python-version: '3.11'
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
-        with:
-          app-name: 'predicthub-server'
-          slot-name: 'Production'
+      - name: Install dependencies in deployment environment
+        run: |
+          cd ./extracted/server
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
 
       - name: Run the application
         run: |
