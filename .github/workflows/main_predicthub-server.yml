@@ -19,7 +19,14 @@ jobs:
           python-version: '3.11'
 
       - name: Navigate to the server directory
-        run: cd ./server
+        run: |
+          if [ -d "./server" ]; then
+            echo "Server directory exists, navigating..."
+            cd ./server
+          else
+            echo "Error: ./server directory does not exist!"
+            exit 1
+          fi
 
       - name: Create and start virtual environment
         run: |
@@ -35,15 +42,13 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           cd ./server
-          zip release.zip ./* -r
+          zip -r ../release.zip ./*
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            ./server/release.zip
-            !./server/venv/
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -61,9 +66,19 @@ jobs:
           name: python-app
 
       - name: Unzip artifact for deployment
+        run: unzip release.zip
+
+      - name: List extracted files
+        run: ls -al
+
+      - name: Verify server directory
         run: |
-          cd ./server
-          unzip release.zip
+          if [ -d "./server" ]; then
+            echo "Server directory exists."
+          else
+            echo "Error: ./server directory does not exist after extraction!"
+            exit 1
+          fi
 
       - name: Login to Azure
         uses: azure/login@v2
