@@ -86,7 +86,7 @@ jobs:
         run: |
           cd ./extracted/server
           source venv/bin/activate
-          python app.py
+          gunicorn --bind 0.0.0.0:5000 app:app
         env:
           MONGO_URI: mongodb+srv://krishnakanta2008:krishna2008@cluster0.7rimb.mongodb.net
           CLOUDINARY_CLOUD_NAME: dtnesry4e
