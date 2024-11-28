@@ -6,7 +6,7 @@ import {
     Settings,
     ChevronRight,
     ChevronsUpDown,
-    // LifeBuoy,
+    UserPen,
     LogOut,
     List,
     ChartNoAxesCombined,
@@ -17,7 +17,6 @@ import {
 import {
     Avatar,
     AvatarFallback,
-    // AvatarImage,
 } from "@/components/ui/avatar"
 import {
     Collapsible,
@@ -27,7 +26,6 @@ import {
 import {
     DropdownMenu,
     DropdownMenuContent,
-    // DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
@@ -61,8 +59,9 @@ import { Cross1Icon } from "@radix-ui/react-icons";
 import { ModeSwitch } from "../Theme/mode-switch"
 import UpdateProfile from "../Settings/AccountSettings"
 import { FeedbackForm } from "../Feedback/FeedbackForm"
+import Contact from "../Contact/Contact"
 
-const BACKEND_URL = 'http://localhost:5000'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
 const storedUsername = localStorage.getItem('predicthub_username')
 
@@ -78,10 +77,12 @@ const data = {
         {
             title: "Prediction",
             isActive: true,
-           
+            url: "/prediction-techniques",
             icon: ChartNoAxesCombined,
             items: [
-                { title: "LSTM", url: "/lstm" },
+                { title: "ARIMA", url: "/prediction/ARIMA" },
+                { title: "Random Forest", url: "/prediction/randomforest" },
+                { title: "LSTM", url: "/prediction/lstm" },
             ],
         },
         {
@@ -156,13 +157,13 @@ export function AppSidebar() {
     }
 
     return (
-        <Sidebar variant="inset" className="border-r bg-opacity-90 backdrop-blur-sm">
+        <Sidebar className="border-r">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <a href="/">
-                                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                                <div >
                                     <span className="text-2xl">📈</span>
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -269,9 +270,6 @@ export function AppSidebar() {
                                                     <UpdateProfile />
                                                 </AlertDialogContent>
                                             </AlertDialog>
-                                            
-                                            
-
                                         </SidebarMenuSub>
                                     </CollapsibleContent>
                                 </>
@@ -314,7 +312,26 @@ export function AppSidebar() {
                                     <FeedbackForm />
                                 </AlertDialogContent>
                             </AlertDialog>
-                            
+                            <AlertDialog>
+                                <AlertDialogTrigger>
+                                    <SidebarMenuItem>
+                                        <SidebarMenuButton asChild size="sm">
+                                            <a>
+                                                <UserPen />
+                                                <span>Contact</span>
+                                            </a>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <div className='flex items-center'>
+                                        <AlertDialogHeader className='text-2xl'>Contact Form</AlertDialogHeader>
+                                        <div className='flex-grow'></div>
+                                        <AlertDialogCancel className="ml-6"><Cross1Icon className='h-3 w-3' /></AlertDialogCancel>
+                                    </div>
+                                    <Contact />
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>

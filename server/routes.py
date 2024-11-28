@@ -1,18 +1,15 @@
 from flask import Blueprint, jsonify
 from utils.Auth.auth import signup_handler, signin_handler 
 from utils.Stock.stock import fetch_stock_data
-from utils.Prediction.LSTM import predict_stock_price
 from utils.User.profile import get_user_profile, get_profile_details, update_profile
 from utils.Watchlist.watchlist import add_to_watchlist ,remove_from_watchlist, get_watchlist
-import numpy as np
+from utils.Contact.contact import save_contact_message
+from utils.Chat.chat import chat_model
 
 auth_routes = Blueprint('auth', __name__)
 stock_routes = Blueprint('stock', __name__)
-prediction_routes = Blueprint('prediction', __name__)
-
-@auth_routes.route('/', methods=['GET'])
-def welcome():
-    return jsonify({"message": "welcome to PredictHub Server"})
+contact_routes = Blueprint('contact', __name__)
+chat_routes = Blueprint('chat', __name__)
 
 @auth_routes.route('/signup', methods=['POST'])
 def signup():
@@ -50,27 +47,10 @@ def remove_from_user_watchlist(username,ticker):
 def get_user_watchlist(username):
     return get_watchlist(username)
 
-@prediction_routes.route('/predict/<ticker>', methods=['GET'])
-def predict_stock(ticker):
-    try:
-        # Get prediction
-        result = predict_stock_price(ticker)
-        
-        # Convert numpy values to Python native types
-        if isinstance(result, np.ndarray):
-            result = result.tolist()
-        elif isinstance(result, np.generic):
-            result = result.item()
-            
-        # Return as JSON with proper structure
-        return jsonify({
-            "success": True,
-            "ticker": ticker,
-            "predicted_price": result
-        })
-        
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
+@contact_routes.route('/contact', methods=['POST'])
+def contact():
+    return save_contact_message()
+
+@chat_routes.route('/chat', methods=['POST'])
+def chat_generativeai_model():
+    return chat_model()
