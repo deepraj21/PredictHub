@@ -2,9 +2,6 @@
 
 PredictHub is a sophisticated stock price prediction and analyzing platform that combines machine learning with real-time market data analysis for naive users to start their trade journey. The application leverages LSTM (Long Short-Term Memory) neural networks to forecast stock prices based on historical data and personalized dashboard with traking favourite stocks features. 
 
-![image](https://github.com/user-attachments/assets/01a1eae3-79e7-4ddd-8897-8b6862af2118)
-
-
 ### ✨ Key Features
 
 - [x] Authentication System
@@ -17,7 +14,8 @@ PredictHub is a sophisticated stock price prediction and analyzing platform that
 - [x] Preprompted chatbot for Stock Market
 - [x] Candle Stick Chart for searched ticker 
 - [x] Description about Stock Prediction Methods
-- [x] 3 Stock Prediction DL/ML Models for next day price prediction
+- [x] 4 Stock Prediction DL/ML Models for next day price prediction
+    - [x] BiLSTM (Bidirectional Long Short Term Memory)
     - [x] LSTM (Long Short Term Memory)
     - [x] Random Forest
     - [x] ARIMA
