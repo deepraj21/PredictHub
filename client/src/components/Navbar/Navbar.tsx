@@ -69,13 +69,13 @@ const DATA = {
         social: {
             GitHub: {
                 name: "GitHub",
-                url: "https://github.com/krishnaKanta2008/PredictHub",
+                url: "https://github.com/deepraj21/PredictHub",
                 icon: Icons.github,
             },
 
             email: {
                 name: "Send Email",
-                url: "mailto:kb0397206@gmail.com",
+                url: "mailto:deepraj21.bera@gmail.com",
                 icon: Icons.email,
             },
         },

@@ -22,7 +22,7 @@ const Footer = () => {
                               <ul className="text-gray-500 dark:text-gray-400 font-medium text-sm">
                                   <li className="mb-4">
                                       <a
-                                          href="https://github.com/krishnaKanta2008"
+                                          href="https://github.com/deepraj21"
                                           className="hover:underline "
                                       >
                                           Github
@@ -30,7 +30,7 @@ const Footer = () => {
                                   </li>
                                   <li>
                                       <a
-                                          href="mailto:kb0397206@gmail.com"
+                                          href="mailto:deepraj21.bera@gmail.com"
                                           className="hover:underline"
                                       >
                                           Mail
